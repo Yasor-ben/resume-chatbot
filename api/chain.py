@@ -85,3 +85,16 @@ def should_continue(state: State) -> Literal["summarize_history", END]:
     if len(message) > 6:
         return "summarize_history"
     return END
+
+
+# https://github.com/Yasor-ben/resume-chatbot.git
+# git remote add origin https://github.com/ton_user/mon-projet.git
+# git branch -M main            # renomme la branche locale en main (si ce n’est pas déjà fait)
+# git push -u origin main       # envoie le code vers GitHub
+
+# 183972828+Yasor-ben@users.noreply.github.com
+# git config --global user.email "183972828+Yasor-ben@users.noreply.github.com"
+# git config --global user.name  "yasor-ben"
+# git commit --amend --reset-author --no-edit
+# git push --force-with-lease origin main
+# git commit --amend --reset-author --no-edit
