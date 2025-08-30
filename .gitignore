@@ -1,3 +1,6 @@
 .env
 *.code-workspace
 .venv
+/test/
+/api/__pycache__
+
