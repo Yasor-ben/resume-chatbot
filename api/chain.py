@@ -1,7 +1,7 @@
 import os
 from typing import Literal
 
-from prompts import SUMMARIZE_PROMPT, SYSTEM_PROMPT
+from .prompts import SUMMARIZE_PROMPT, SYSTEM_PROMPT
 from langchain_core.messages import SystemMessage, HumanMessage, RemoveMessage
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
@@ -55,21 +55,17 @@ def call_model(state: State, conversation_summary: str) -> dict:
 
 def summarize_history(state: State) -> dict:
 
-    llm = ChatOpenAI(
-        api_key=os.environ["OPENAI_API_KEY"],
-        model=os.environ["MODEL_ID"],
-        temperature=0.2,
-    )
     history = state.get("history", "")
     if history:
         history_message = f"summary of conversation earlier : {history}"
     else:
         history_message = f"No conversation history aviable"
-
-    message = [state(message)] + [HumanMessage(content=history_message)]
-    response = summarize.invoke(message)
-    delete_message = [RemoveMessage(id=m.id) for m in state["message"][:-2]]
-    return {"history": response.content, "messages": delete_message}
+    idem = state["messages"]
+    message = state["messages"] + [HumanMessage(content=history_message)]
+    response = summarize(message)
+    delete_message = [RemoveMessage(id=m.id) for m in state["messages"][:-2]]
+    state["history"] = response
+    return {"history": response, "messages": delete_message}
 
 
 def print_update(update: dict) -> None:
@@ -82,8 +78,8 @@ def print_update(update: dict) -> None:
 
 def should_continue(state: State) -> Literal["summarize_history", END]:
     message = state["messages"]
-    if len(message) > 6:
-        return "summarize_history"
+    if len(message) > 2:
+        return END  # "summarize_history"
     return END
 
 

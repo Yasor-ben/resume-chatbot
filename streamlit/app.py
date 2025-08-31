@@ -37,6 +37,7 @@ if user_input:
         stream=True,
     )
     if response.status_code == 200:
+        print(response)
         response_text = ""
         for chunk in response.iter_lines():
             if chunk:

@@ -1,4 +1,5 @@
 .env
+git.py
 *.code-workspace
 .venv
 /test/
